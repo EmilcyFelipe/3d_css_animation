@@ -3,6 +3,10 @@
     box-sizing: border-box;
     
 }
+:root{
+    --rotateSpeed:30s;
+    --bounceSpeed:2s;
+}
 body{
     display: flex;
     justify-content: center;
@@ -10,7 +14,7 @@ body{
     perspective: 10em;
     perspective-origin: 50%, calc(50% - 2em);
     
-    background-color: rgba(0, 0, 0, 0.822);
+    background-color: rgba(0, 0, 0);
     
     
 }
@@ -20,7 +24,7 @@ body{
     height: 30vh;
     /* background-color: aquamarine; */
     transform-style: preserve-3d;
-    animation: rotateScene 4s infinite linear;
+    animation: rotateScene var(--rotateSpeed) infinite linear;
 }
 
 @keyframes rotateScene{
@@ -33,22 +37,23 @@ body{
 
 .ball{
     position:absolute;
-    background-color: rgb(187, 226, 226);
+    background:radial-gradient(circle at top, lightblue, #000);
     width: 1em;
     height: 1em;
     border-radius: 50%;
     bottom: calc(50% - 1.5em);
     left: calc(50% - .5em);
     transform-origin: center;
-    animation: rotateScene 4s infinite linear reverse, bouncingBall 4s infinite alternate;
+    animation: 
+    bouncingBall var(--bounceSpeed) infinite alternate ease-out,
+    rotateScene var(--rotateSpeed) infinite linear reverse;
 }
 
 @keyframes bouncingBall {
-    0%{
-        transform: translateY(0);
-    }
-    100%{
-        transform: translateY(-2em);
+    0%,100%{bottom:calc(50% - 1.5em);}
+    50%{
+        bottom:calc(50% + 3em);
+        animation-timing-function: ease-in;
     }
     
 }
@@ -59,17 +64,15 @@ body{
     position: absolute;
     top: calc(50% + 1em);
     left: calc(50% - 1em);
-    animation: smashCube 4s infinite;
+    animation: smashCube var(--bounceSpeed) infinite;
     transform-style: preserve-3d;
     transform-origin: bottom;
 }
 @keyframes smashCube {
-    0%{}
-    50%{
-        transform: scaleY(1);
-    }
-    55%{
-        transform: scale(.8);
+    0%{transform: scaleY(.8);}
+    98%{}
+    100%{
+    
     }
     
 }
@@ -97,10 +100,21 @@ body{
 .top{
     transform: translateY(-1em) rotateX(90deg);
     transform-origin: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .bottom{
     transform: translateY(1em) rotateX(90deg);
     transform-origin: center;
+}
+
+.ballShadow{
+    width: 30%;
+    height: 30%;
+    border-radius: 50%;
+    background-color: black;
+    filter: blur(.1em);
 }
 
 .board{ 
